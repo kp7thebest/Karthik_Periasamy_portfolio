@@ -3,8 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Karthik Periasamy — Digital design &amp; verification</title>
-<meta name="description" content="Karthik Periasamy — analog IC design, semiconductor devices, RTL and verification, with statistical modelling and optimisation. Electronics and Mathematics at BITS Pilani.">
+<title>Karthik Periasamy</title>
+<meta name="description" content="Electronics and mathematics at BITS Pilani. Analog IC design, semiconductor devices, RTL and verification, statistical modelling and optimisation.">
+
+<!-- link previews: WhatsApp, LinkedIn, Slack, iMessage read these -->
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Karthik Periasamy">
+<meta property="og:description" content="Electronics and mathematics at BITS Pilani.">
+<meta property="og:url" content="https://karthikperiasamy.vercel.app">
+<meta property="og:site_name" content="Karthik Periasamy">
+<meta property="profile:first_name" content="Karthik">
+<meta property="profile:last_name" content="Periasamy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Karthik Periasamy">
+<meta name="twitter:description" content="Electronics and mathematics at BITS Pilani.">
+<link rel="canonical" href="https://karthikperiasamy.vercel.app">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23241A38'/%3E%3Crect x='9' y='9' width='14' height='14' fill='none' stroke='%23EE9457' stroke-width='2'/%3E%3Cpath d='M16 2v7M16 23v7M2 16h7M23 16h7' stroke='%237CB8E0' stroke-width='2'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -3725,7 +3738,7 @@ a{color:inherit}
   line-height:1;margin:0;letter-spacing:-.01em;
 }
 .sec-head .tag{margin-left:auto}
-section{padding-block:clamp(72px,10vw,140px);position:relative}
+section{padding-block:clamp(72px,10vw,140px);position:relative;z-index:1}
 
 /* ---------- top rail ---------- */
 .rail{
@@ -3740,6 +3753,7 @@ section{padding-block:clamp(72px,10vw,140px);position:relative}
 }
 .rail.on{transform:none;border-bottom-color:var(--line)}
 .rail .id{font-family:var(--mono);font-size:12.5px;color:var(--ink)}
+.rail-badge{width:30px;height:24px;flex:none}
 
 /* ---------- hamburger + pop-out menu ---------- */
 .burger{
@@ -3844,7 +3858,7 @@ body.locked{overflow:hidden}
 
 /* ---------- hero / die ---------- */
 .die{
-  position:relative;height:100svh;min-height:600px;
+  position:relative;z-index:3;height:100svh;min-height:600px;
   display:flex;flex-direction:column;justify-content:flex-end;
   padding:0 0 clamp(28px,5vh,56px);
   overflow:hidden;isolation:isolate;
@@ -3853,7 +3867,10 @@ body.locked{overflow:hidden}
     radial-gradient(60% 55% at 30% 62%,rgba(124,184,224,.20) 0%,transparent 66%),
     linear-gradient(165deg,rgba(46,34,70,.50) 0%,rgba(36,26,56,.30) 55%,rgba(23,15,36,.62) 100%);
 }
-#scene{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:-2}
+#scene{
+  position:fixed;inset:0;width:100vw;height:100vh;display:block;
+  z-index:2;pointer-events:none;
+}
 .die::after{
   content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
   background:
@@ -4174,6 +4191,7 @@ footer{
 </div>
 
 <header class="rail" id="rail">
+  <span class="rail-badge" id="railSlot" aria-hidden="true"></span>
   <span class="id">KP · electronics &amp; mathematics</span>
 </header>
 
@@ -4182,6 +4200,8 @@ footer{
 </button>
 
 <div class="menu-backdrop" id="menuBackdrop" hidden></div>
+
+<canvas id="scene" aria-hidden="true"></canvas>
 
 <nav class="menu" id="menu" aria-label="Main" aria-hidden="true">
   <p class="menu-eyebrow">Navigate</p>
@@ -4206,7 +4226,6 @@ footer{
 
 <!-- ============ HERO / DIE ============ -->
 <div class="die" id="top">
-  <canvas id="scene" aria-hidden="true"></canvas>
   <div class="die-frame" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
 
   <div class="wrap hero-in">
@@ -4846,8 +4865,18 @@ function initScene(){
   var cvs=document.getElementById("scene");
   if(!cvs || typeof THREE==="undefined") return;
 
-  var renderer=new THREE.WebGLRenderer({canvas:cvs,antialias:true,alpha:true});
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+  var renderer;
+  try{
+    renderer=new THREE.WebGLRenderer({canvas:cvs,antialias:true,alpha:true});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+  }catch(e){
+    /* some mobile browsers/webviews refuse a WebGL context; the hero still
+       shows its CSS gradient fallback, and — importantly — everything after
+       this call (the menu, the rail) keeps working rather than silently
+       breaking too, which is what an uncaught error here would have done */
+    console.warn("3D hero unavailable, WebGL context could not be created.",e);
+    return;
+  }
 
   var scene=new THREE.Scene();
   var camera=new THREE.PerspectiveCamera(42,1,0.1,100);
@@ -5199,16 +5228,75 @@ function initScene(){
   var mx=0,my=0,tmx=0,tmy=0;
   var reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* where the aircraft sits in the hero, and where it parks once you scroll —
+     a small permanent badge next to "KP · electronics & mathematics" in the
+     rail header. It reaches that badge by flying an arc across the screen,
+     not a straight shrink, using CTRL as the bezier's off-path control point. */
+  var HERO={x:0.55,y:0.78,s:1.18};
+  var PARK={x:0,y:0,s:0.17};
+  var CTRL={x:0,y:0};
+  var narrowScreen=false;
+
+  /* the same window drives the flight, the afterburner flare, and the
+     rail's own slide-in — so the bar is already open when the jet arrives */
+  var DOCK_START=0.50, DOCK_END=0.86;
+
+  /* local refs: resize() runs once synchronously below, before the later
+     "RAIL" script section's own `rail` variable has been assigned */
+  var rail=document.getElementById("rail");
+  var railSlot=document.getElementById("railSlot");
+
+  /* convert a pixel position (e.g. from getBoundingClientRect) to the world
+     x/y that projects onto it, at the given distance in front of the camera */
+  function pixelToWorld(px,py,worldZ){
+    var dist=camera.position.z-worldZ;
+    var halfH=Math.tan((camera.fov*Math.PI/180)/2)*dist;
+    var halfW=halfH*camera.aspect;
+    var ndcX=(px/window.innerWidth)*2-1;
+    var ndcY=-(py/window.innerHeight)*2+1;
+    return {x:ndcX*halfW, y:ndcY*halfH};
+  }
+
   function resize(){
     var r=cvs.getBoundingClientRect();
     if(!r.width||!r.height) return;
     renderer.setSize(r.width,r.height,false);
     camera.aspect=r.width/r.height;
-    var narrow=r.width<760;
-    camera.position.z = narrow ? 10.2 : 7.4;
-    root.position.y   = narrow ? 1.15 : 0;
-    root.scale.setScalar(narrow ? 0.92 : 1);
+    narrowScreen = r.width<760;
+    var rootOffsetY = narrowScreen ? 1.15 : 0;
+    var rootScale    = narrowScreen ? 0.92 : 1;
+    camera.position.z = narrowScreen ? 10.2 : 7.4;
+    root.position.y   = rootOffsetY;
+    root.scale.setScalar(rootScale);
     camera.updateProjectionMatrix();
+
+    /* PARK is the rail badge slot's real position, measured from the DOM —
+       not guessed — so it always lines up with "KP · electronics & mathematics"
+       exactly, at any viewport size or font metrics. The slot is only ever
+       visible through a CSS transform on .rail (slide down/up), which would
+       throw off getBoundingClientRect while hidden, so the transform is
+       cleared for the single synchronous measurement and restored before
+       the browser paints — no visible flash. */
+    var railPrevTransform=rail.style.transform;
+    rail.style.transform="none";
+    var slotRect=railSlot.getBoundingClientRect();
+    rail.style.transform=railPrevTransform;
+
+    var slotPx=slotRect.left+slotRect.width/2, slotPy=slotRect.top+slotRect.height/2;
+    var screenTarget=pixelToWorld(slotPx,slotPy,0);
+    PARK.x= screenTarget.x / rootScale;
+    PARK.y=(screenTarget.y - rootOffsetY) / rootScale;
+
+    /* an off-path control point gives the transition a real diagonal sweep
+       across the screen instead of a straight shrink from A to B. 1.55/1.35
+       are the desktop-tuned offsets; on a narrow portrait phone the visible
+       half-width is much smaller, so they're capped to a share of it —
+       otherwise the midpoint of the flight can swing off-screen and the
+       aircraft briefly vanishes mid-scroll. */
+    var halfH=Math.tan((camera.fov*Math.PI/180)/2)*camera.position.z;
+    var halfW=halfH*camera.aspect;
+    CTRL.x=HERO.x+Math.min(1.55, halfW*0.55);
+    CTRL.y=HERO.y-Math.min(1.35, halfH*0.42);
   }
   resize();
   window.addEventListener("resize",resize);
@@ -5258,40 +5346,118 @@ function initScene(){
     }
   }
 
+  /* 0 while the hero fills the screen, 1 once the aircraft has landed
+     in the rail badge; smoothstepped over the DOCK_START..DOCK_END window */
+  function dockProgress(){
+    var vh=window.innerHeight;
+    var p=(window.scrollY-vh*DOCK_START)/(vh*(DOCK_END-DOCK_START));
+    p=Math.min(Math.max(p,0),1);
+    return p*p*(3-2*p);
+  }
+  function mix(a,b,t){ return a+(b-a)*t; }
+
+  /* quadratic bezier through HERO -> CTRL -> PARK: a real arc across the
+     screen rather than a straight interpolation */
+  function flightPos(p){
+    var q=1-p;
+    return {
+      x: q*q*HERO.x + 2*q*p*CTRL.x + p*p*PARK.x,
+      y: q*q*HERO.y + 2*q*p*CTRL.y + p*p*PARK.y
+    };
+  }
+
+  function applyDock(p){
+    /* eased scale: stays close to full size early, then shrinks fast near
+       the end, reading as "flies off into the distance" rather than a
+       uniform zoom */
+    jet.scale.setScalar(mix(HERO.s,PARK.s,Math.pow(p,1.6)));
+    /* the wafer belongs to the hero; it fades out as the aircraft departs */
+    wafer.material.opacity=0.62*(1-p);
+    waferRim.material.opacity=0.60*(1-p);
+    wafer.visible=waferRim.visible=(p<0.99);
+  }
+
   function frame(){
     if(!running) return;
     requestAnimationFrame(frame);
     clock+=1/60;
+    var p=dockProgress();
     if(!reduced){
+      /* the pass itself lights the afterburner — a bell curve peaking at
+         the midpoint of the flight, on top of whatever scrolling already set */
+      var flightFlare=Math.sin(Math.min(p,1)*Math.PI)*(p>0&&p<1?0.62:0);
+      burnT=Math.max(burnT, 0.12+flightFlare);
       burnT+=(0.12-burnT)*0.026;          /* settle back to idle */
       burn +=(burnT-burn)*0.085;
       mx+=(tmx-mx)*0.045; my+=(tmy-my)*0.045;
-      /* under power it banks harder and noses up, and eases forward */
-      jet.rotation.z=BASE.z+Math.sin(clock*0.42)*0.075+mx*0.16-burn*0.16;
-      jet.rotation.x=BASE.x+Math.sin(clock*0.31)*0.035+my*0.14+burn*0.10;
-      jet.rotation.y=BASE.y+mx*0.26;
-      jet.position.y=0.78+Math.sin(clock*0.55)*0.075+burn*0.10;
+
+      /* banking through the pass: rolls into the turn, noses up on the climb
+         out, levels off as it settles into the badge */
+      var bank=Math.sin(p*Math.PI);
+      jet.rotation.z=BASE.z+Math.sin(clock*0.42)*0.075*(1-p)+mx*0.16*(1-p)-burn*0.16-bank*0.95;
+      jet.rotation.x=BASE.x+Math.sin(clock*0.31)*0.035*(1-p)+my*0.14*(1-p)+burn*0.10+bank*0.32;
+      jet.rotation.y=BASE.y+mx*0.26*(1-p)+bank*0.40;
+
+      /* an arc across the screen, not a straight shrink, into the rail badge */
+      var pos=flightPos(p);
+      jet.position.x=pos.x;
+      jet.position.y=pos.y+Math.sin(clock*0.55)*0.075*(1-p)+burn*0.10*(1-p);
       jet.position.z=burn*0.42;
+
       wafer.rotation.z+=0.00050;
-      root.rotation.y=mx*0.10;
+      root.rotation.y=mx*0.10*(1-p);
       setBurn(burn,clock);
+      applyDock(p);
     }
     renderer.render(scene,camera);
   }
-  if(reduced){ setBurn(0.38,0); renderer.render(scene,camera); }
-  else frame();
 
-  if("IntersectionObserver" in window){
-    new IntersectionObserver(function(en){
-      if(en[0].isIntersecting){ if(!running && !reduced){ running=true; frame(); } }
-      else running=false;
-    },{threshold:0}).observe(cvs);
-  }
+  if(reduced){
+    /* no idle loop, but the aircraft must still dock as the page moves */
+    var pending=false;
+    var renderOnce=function(){
+      pending=false;
+      var p=dockProgress();
+      var pos=flightPos(p);
+      jet.position.x=pos.x;
+      jet.position.y=pos.y;
+      var bank=Math.sin(p*Math.PI);
+      jet.rotation.z=BASE.z-bank*0.95;
+      jet.rotation.x=BASE.x+bank*0.32;
+      jet.rotation.y=BASE.y+bank*0.40;
+      applyDock(p);
+      setBurn(0.38,0);
+      renderer.render(scene,camera);
+    };
+    var request=function(){
+      if(!pending){ pending=true; requestAnimationFrame(renderOnce); }
+    };
+    renderOnce();
+    window.addEventListener("scroll",request,{passive:true});
+    window.addEventListener("resize",request);
+  } else frame();
+
+  /* the canvas is fixed now, so it is always on screen and an
+     IntersectionObserver would never pause it. Pause on tab hide instead,
+     which is where the wasted work actually is. */
+  document.addEventListener("visibilitychange",function(){
+    if(document.hidden){ running=false; }
+    else if(!reduced && !running){ running=true; frame(); }
+  });
+
   scn.ok=true;
 }
 
-if(typeof THREE!=="undefined"){ initScene(); }
-else { window.addEventListener("load",function(){ if(typeof THREE!=="undefined") initScene(); }); }
+/* the menu and rail setup below runs in this same script block right after
+   this call — an uncaught error anywhere inside the 3D hero must not be
+   able to take navigation down with it, so this call site is guarded too,
+   not just the WebGL constructor inside initScene() itself */
+function safeInitScene(){
+  try{ initScene(); }
+  catch(e){ console.warn("3D hero failed to initialise; the rest of the page is unaffected.",e); }
+}
+if(typeof THREE!=="undefined"){ safeInitScene(); }
+else { window.addEventListener("load",function(){ if(typeof THREE!=="undefined") safeInitScene(); }); }
 
 /* ================= POP-OUT MENU ================= */
 var burger=document.getElementById("burger"),
@@ -5357,11 +5523,26 @@ if(window.matchMedia("(hover:hover) and (pointer:fine)").matches){
 }
 
 /* ================= RAIL ================= */
+/* opens right as the aircraft starts its approach (DOCK_START, defined
+   alongside the flight logic above), so the badge is there to receive it.
+   The rail's own background sits at z-index:60 for unrelated UI reasons
+   (it needs to sit above ordinary page content while scrolling); the canvas
+   normally sits well below that. Once the rail is open, the aircraft is
+   meant to be sitting inside it, in the badge slot, so the canvas needs to
+   jump above the rail's background for exactly that window — never before,
+   since during the hero the intended layering is the opposite (the hero's
+   own text and vignette sit above the scene, which is still correct at the
+   canvas's low resting z-index). */
 var rail=document.getElementById("rail");
-window.addEventListener("scroll",function(){
-  if(window.scrollY>window.innerHeight*0.72) rail.classList.add("on");
-  else rail.classList.remove("on");
-},{passive:true});
+var sceneCanvas=document.getElementById("scene");
+var RAIL_ON_AT=0.50;
+function syncRail(){
+  var on=window.scrollY>window.innerHeight*RAIL_ON_AT;
+  rail.classList.toggle("on",on);
+  if(sceneCanvas) sceneCanvas.style.zIndex = on ? "65" : "2";
+}
+syncRail();   // correct immediately for a page load that starts pre-scrolled
+window.addEventListener("scroll",syncRail,{passive:true});
 
 /* ================= TIMING READOUT ================= */
 var DATA={
