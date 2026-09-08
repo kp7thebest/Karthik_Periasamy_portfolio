@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projects — Karthik Periasamy</title>
+<meta name="description" content="A pipelined RV32I core taken to sky130 with scan-based DFT, QKD hardware evaluation, and two energy-modelling projects.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2314161A'/%3E%3Crect x='9' y='9' width='14' height='14' fill='none' stroke='%23DE8A4E' stroke-width='2'/%3E%3Cpath d='M16 2v7M16 23v7M2 16h7M23 16h7' stroke='%236FA6D6' stroke-width='2'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Projects — Karthik Periasamy">
+<meta property="og:description" content="A pipelined RV32I core taken to sky130 with scan-based DFT, QKD hardware evaluation, and two energy-modelling projects.">
+<meta property="og:url" content="https://karthikperiasamy.vercel.app/projects.html">
+<meta property="og:site_name" content="Karthik Periasamy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Projects — Karthik Periasamy">
+<meta name="twitter:description" content="A pipelined RV32I core taken to sky130 with scan-based DFT, QKD hardware evaluation, and two energy-modelling projects.">
+<link rel="canonical" href="https://karthikperiasamy.vercel.app/projects.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@75..150,400..900&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<canvas id="waferBg" aria-hidden="true"></canvas>
+<div class="wafer-veil" aria-hidden="true"></div>
+
+<header class="topbar">
+  <a class="brand" href="index.html">Karthik<span>.</span></a>
+  <button class="navtoggle" id="navtoggle" aria-expanded="false" aria-controls="topnav" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <nav class="topnav" id="topnav" aria-label="Main">
+    <a href="index.html">Home</a>
+    <a href="work.html">Work</a>
+    <a href="projects.html" aria-current="page">Projects</a>
+    <a href="about.html">About</a>
+  </nav>
+</header>
+
+<main>
+  <section>
+    <div class="wrap">
+      <div class="sec-head"><h2>Projects</h2><span class="eyebrow">Four</span></div>
+      <p class="lede">Two on silicon, two on the mathematics underneath energy systems. Each opens up if you want the detail.</p>
+
+      <!-- 1 -->
+      <article class="proj">
+        <div class="proj-head">
+          <h3>RV32I core, RTL to sky130 with scan-based DFT</h3>
+          <span class="proj-when">Sep 2026 — ongoing</span>
+        </div>
+        <div class="proj-stack">SystemVerilog · cocotb · Yosys · sky130 · Python</div>
+        <div class="proj-adv">Independent project</div>
+        <p class="proj-sum">A five-stage pipelined RISC-V core taken from RTL through synthesis to a sky130 layout, then attacked with a scan chain, a fault simulator and an ATPG engine written from scratch.</p>
+
+        <div class="metrics">
+          <div><b>5,986</b><span>standard cells</span></div>
+          <div><b>0.08</b><span>mm² die area</span></div>
+          <div><b>15.8k</b><span>faults targeted</span></div>
+          <div><b>514</b><span>test patterns</span></div>
+        </div>
+        <div class="cov-bar"><i id="covFill" data-to="99.78"></i></div>
+        <div class="cov-legend"><span>Stuck-at fault coverage</span><span id="covNum">0.00%</span></div>
+
+        <details class="more">
+          <summary>How it was built</summary>
+          <div class="more-body">
+            <ul class="marks result">
+              <li>Five-stage pipelined RV32I core with forwarding, load-use stall and branch flush, beside a lint-clean single-cycle reference core.</li>
+              <li>A cocotb suite backed by Python reference models, 13 directed programs assembled by an RV32I assembler I wrote, and 10 hazard tests.</li>
+              <li>Synthesis to sky130 surfaced two RTL patterns that both lint and simulation had signed off on.</li>
+              <li>Scan insertion, bit-parallel stuck-at fault simulation and two-phase ATPG — random fill, then PODEM — written from scratch.</li>
+            </ul>
+            <figure class="fig">
+              <svg viewBox="0 0 400 210" role="img" aria-label="Five-stage pipeline with forwarding paths returning to execute">
+                <g class="stg">
+                  <rect x="4" y="70" width="70" height="38"></rect><text class="n" x="20" y="95">IF</text>
+                  <rect x="86" y="70" width="70" height="38"></rect><text class="n" x="100" y="95">ID</text>
+                  <rect x="168" y="70" width="70" height="38"></rect><text class="n" x="184" y="95">EX</text>
+                  <rect x="250" y="70" width="70" height="38"></rect><text class="n" x="258" y="95">MEM</text>
+                  <rect x="332" y="70" width="64" height="38"></rect><text class="n" x="346" y="95">WB</text>
+                </g>
+                <g class="flow">
+                  <path d="M74 89 L84 89"></path><path d="M78 85 L84 89 L78 93"></path>
+                  <path d="M156 89 L166 89"></path><path d="M160 85 L166 89 L160 93"></path>
+                  <path d="M238 89 L248 89"></path><path d="M242 85 L248 89 L242 93"></path>
+                  <path d="M320 89 L330 89"></path><path d="M324 85 L330 89 L324 93"></path>
+                </g>
+                <path class="fwd" d="M285 108 L285 132 L210 132 L210 108"></path>
+                <text class="fwd-lbl" x="202" y="150">forward MEM → EX</text>
+                <path class="fwd" d="M364 108 L364 176 L180 176 L180 108"></path>
+                <text class="fwd-lbl" x="229" y="194">forward WB → EX</text>
+                <path class="fwd" d="M121 70 C121 40, 39 40, 39 70" stroke="var(--blue)"></path>
+                <text class="fwd-lbl" x="43" y="24" fill="var(--blue)">stall / flush</text>
+              </svg>
+              <figcaption>Datapath with hazard handling: forwarding from MEM and WB, load-use stall, branch flush.</figcaption>
+            </figure>
+          </div>
+        </details>
+        <a class="src" href="https://github.com/kp7thebest" target="_blank" rel="noopener">Source on GitHub</a>
+      </article>
+
+      <!-- 2 -->
+      <article class="proj">
+        <div class="proj-head">
+          <h3>QKD protocols on photonic devices</h3>
+          <span class="proj-when">Aug — Dec 2025</span>
+        </div>
+        <div class="proj-stack">Photonics · optical fibre · systems costing</div>
+        <div class="proj-adv">Supervised by Dr. Rahul Singhal, BITS Pilani</div>
+        <p class="proj-sum">Evaluated hardware architectures for BB84, B92 and E91 quantum key distribution over optical fibre, then proposed a minimum-cost build that survives real components.</p>
+        <details class="more">
+          <summary>What the study covered</summary>
+          <div class="more-body">
+            <ul class="marks research">
+              <li>Evaluated hardware architectures for the BB84, B92 and E91 protocols in optical fibre systems.</li>
+              <li>Compared trade-offs across source preparation, basis selection and detection, each with a cost attached rather than treated as ideal.</li>
+              <li>Proposed a minimum-cost BB84 implementation optimised for practical deployment rather than ideal-component performance.</li>
+            </ul>
+            <figure class="fig">
+              <svg viewBox="0 0 400 150" role="img" aria-label="BB84 over optical fibre: polarised photons sent between two bases">
+                <rect x="4" y="52" width="62" height="42" fill="var(--graphite-3)" stroke="var(--line-2)"></rect>
+                <text class="ph" x="14" y="78">source</text>
+                <rect x="334" y="52" width="62" height="42" fill="var(--graphite-3)" stroke="var(--line-2)"></rect>
+                <text class="ph" x="344" y="78">detector</text>
+                <path class="fibre" d="M66 73 L334 73"></path>
+                <path class="fibre" d="M66 67 L334 67" opacity=".4"></path>
+                <path class="fibre" d="M66 79 L334 79" opacity=".4"></path>
+                <g class="pol">
+                  <path d="M110 32 L110 52"></path>
+                  <path d="M170 42 L190 42"></path>
+                  <path class="d" d="M232 32 L248 50"></path>
+                  <path class="d" d="M292 50 L308 32"></path>
+                </g>
+                <g class="ph">
+                  <text x="102" y="26">0°</text><text x="172" y="34">90°</text>
+                  <text x="230" y="26">45°</text><text x="288" y="26">135°</text>
+                  <text x="96" y="122">rectilinear basis</text>
+                  <text x="244" y="122">diagonal basis</text>
+                </g>
+              </svg>
+              <figcaption>Source and detector pick bases independently and keep only the matches.</figcaption>
+            </figure>
+          </div>
+        </details>
+      </article>
+
+      <!-- 3 -->
+      <article class="proj">
+        <div class="proj-head">
+          <h3>Demand-side energy management for agrophotovoltaic systems</h3>
+          <span class="proj-when">Jan — Jul 2025</span>
+        </div>
+        <div class="proj-stack">Python · particle swarm optimisation · real tariff data</div>
+        <div class="proj-adv">Supervised by Dr. Sumanta Pasari, BITS Pilani</div>
+        <p class="proj-sum">A particle swarm optimiser that maximises energy-trading revenue for agrivoltaic prosumers under real grid and tariff constraints.</p>
+        <details class="more">
+          <summary>How the model works</summary>
+          <div class="more-body">
+            <ul class="marks research">
+              <li>Built a particle swarm optimiser for agrivoltaic prosumers under grid and tariff constraints, driven by real-world data rather than synthetic profiles.</li>
+              <li>Maximised energy-trading revenue across the dispatch schedule, with the constraint set doing the work a penalty term usually fudges.</li>
+              <li>Evaluated how the model performs and scales for actual deployment, not only on the training window.</li>
+            </ul>
+            <figure class="fig">
+              <svg viewBox="0 0 400 150" role="img" aria-label="A particle swarm converging on a revenue optimum drawn as contours">
+                <g class="contour">
+                  <ellipse cx="250" cy="72" rx="128" ry="58"></ellipse>
+                  <ellipse cx="250" cy="72" rx="94" ry="43"></ellipse>
+                  <ellipse cx="250" cy="72" rx="60" ry="28"></ellipse>
+                  <ellipse cx="250" cy="72" rx="27" ry="13"></ellipse>
+                </g>
+                <path class="trail" d="M40 24 C110 40, 170 92, 238 70"></path>
+                <path class="trail" d="M60 132 C130 126, 176 46, 244 68"></path>
+                <path class="trail" d="M372 128 C330 108, 300 60, 258 74"></path>
+                <path class="trail" d="M366 20 C320 36, 300 88, 262 70"></path>
+                <g class="swarm">
+                  <circle cx="238" cy="70" r="3.2"></circle><circle cx="244" cy="68" r="3.2"></circle>
+                  <circle cx="258" cy="74" r="3.2"></circle><circle cx="262" cy="70" r="3.2"></circle>
+                  <circle cx="250" cy="72" r="4.6" fill="var(--ember-soft)"></circle>
+                </g>
+                <text class="ph" x="270" y="60">best revenue</text>
+                <text class="ph" x="12" y="146">tariff × dispatch schedule</text>
+              </svg>
+              <figcaption>Particles converging on the revenue optimum under grid and tariff constraints.</figcaption>
+            </figure>
+          </div>
+        </details>
+        <a class="src" href="https://github.com/kp7thebest" target="_blank" rel="noopener">Source on GitHub</a>
+      </article>
+
+      <!-- 4 -->
+      <article class="proj">
+        <div class="proj-head">
+          <h3>Statistical distributions for energy data analysis</h3>
+          <span class="proj-when">Jan — Jul 2024</span>
+        </div>
+        <div class="proj-stack">Python · estimation theory · goodness-of-fit testing</div>
+        <div class="proj-adv">Supervised by Dr. Sumanta Pasari, BITS Pilani</div>
+        <p class="proj-sum">Fitted exponential-family distributions to solar and wind data, then benchmarked three estimators against each other to see which survived the tails.</p>
+        <details class="more">
+          <summary>What the comparison showed</summary>
+          <div class="more-body">
+            <ul class="marks research">
+              <li>Modelled solar and wind datasets with exponential-family distributions to capture their stochastic behaviour rather than smoothing it away.</li>
+              <li>Benchmarked method of moments, maximum likelihood and L-moments estimators on the same data using statistical fit metrics.</li>
+              <li>Drew out what the fits imply for uncertainty modelling and grid-level forecasting — the groundwork the optimiser above stands on.</li>
+            </ul>
+            <figure class="fig">
+              <svg viewBox="0 0 400 150" role="img" aria-label="A histogram of wind speed with three fitted distributions">
+                <g class="bar">
+                  <rect x="18" y="112" width="30" height="8"></rect>
+                  <rect x="51" y="96" width="30" height="24"></rect>
+                  <rect x="84" y="72" width="30" height="48"></rect>
+                  <rect x="117" y="48" width="30" height="72"></rect>
+                  <rect x="150" y="32" width="30" height="88"></rect>
+                  <rect x="183" y="38" width="30" height="82"></rect>
+                  <rect x="216" y="54" width="30" height="66"></rect>
+                  <rect x="249" y="74" width="30" height="46"></rect>
+                  <rect x="282" y="90" width="30" height="30"></rect>
+                  <rect x="315" y="103" width="30" height="17"></rect>
+                  <rect x="348" y="111" width="30" height="9"></rect>
+                </g>
+                <path class="fit" d="M20 117 C60 113, 84 80, 112 58 S 152 26, 182 32 S 242 62, 282 90 S 344 113, 380 117"></path>
+                <path class="fit alt" d="M20 114 C64 108, 90 86, 118 64 S 158 34, 188 40 S 246 70, 288 94 S 346 114, 380 118"></path>
+                <path class="fit alt2" d="M20 119 C56 116, 80 74, 106 52 S 148 22, 176 28 S 238 58, 278 88 S 342 112, 380 116"></path>
+                <line x1="18" y1="120" x2="380" y2="120" stroke="var(--line-2)" stroke-width="1"></line>
+                <g class="ph">
+                  <text x="18" y="140">measured wind speed</text>
+                  <text x="250" y="140" fill="var(--ember)">MLE</text>
+                  <text x="290" y="140" fill="var(--blue)">MOM</text>
+                  <text x="335" y="140" fill="var(--steel-light)">L-moments</text>
+                </g>
+              </svg>
+              <figcaption>Three estimators fitting the same model — the disagreement in the tail is the finding.</figcaption>
+            </figure>
+          </div>
+        </details>
+        <a class="src" href="https://github.com/kp7thebest" target="_blank" rel="noopener">Source on GitHub</a>
+      </article>
+    </div>
+  </section>
+  <section id="contact">
+    <div class="wrap">
+      <div class="sec-head"><h2>Get in touch</h2><span class="eyebrow">Contact</span></div>
+      <p class="lede">Happy to talk about anything here — the devices, the RTL, the statistics, or a fault I haven't caught yet.</p>
+      <div class="pads">
+        <a class="pad" href="mailto:karthik.lal.periasamy@gmail.com" aria-label="Email Karthik">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="1.5"/><path d="M3 6.5l9 6.5 9-6.5"/></svg>
+          <span class="k">Email</span>
+        </a>
+        <a class="pad" href="https://www.linkedin.com/in/karthikperiasamy/" target="_blank" rel="noopener" aria-label="LinkedIn profile">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 10.5V17M7 7.2v.1M11 17v-3.6a2.4 2.4 0 0 1 4.8 0V17"/></svg>
+          <span class="k">LinkedIn</span>
+        </a>
+        <a class="pad" href="https://github.com/kp7thebest" target="_blank" rel="noopener" aria-label="GitHub profile">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.3 4.3 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12 12 0 0 0-6 0C6.7 2.7 5.6 3 5.6 3a4.3 4.3 0 0 0-.1 3.2A4.6 4.6 0 0 0 4.2 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg>
+          <span class="k">GitHub</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-row">
+      <span>Karthik Periasamy · Hyderabad, India</span>
+      <span><a href="index.html">Home</a></span>
+    </div>
+    <p class="credit">
+      Aircraft: <a href="https://sketchfab.com/3d-models/rafale-fighter-jet-f012d19259b44bca82dda214aee7a53f" target="_blank" rel="noopener">Rafale Fighter Jet</a>
+      by <a href="https://sketchfab.com/ALI1388" target="_blank" rel="noopener">ALI1388</a>,
+      licensed <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.
+      Simplified for the web: external stores, landing gear and textures removed.
+    </p>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+
+</body>
+</html>

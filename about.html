@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About — Karthik Periasamy</title>
+<meta name="description" content="Electronics and mathematics at BITS Pilani: what I work on, the tools I use, and where I studied.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2314161A'/%3E%3Crect x='9' y='9' width='14' height='14' fill='none' stroke='%23DE8A4E' stroke-width='2'/%3E%3Cpath d='M16 2v7M16 23v7M2 16h7M23 16h7' stroke='%236FA6D6' stroke-width='2'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="About — Karthik Periasamy">
+<meta property="og:description" content="Electronics and mathematics at BITS Pilani: what I work on, the tools I use, and where I studied.">
+<meta property="og:url" content="https://karthikperiasamy.vercel.app/about.html">
+<meta property="og:site_name" content="Karthik Periasamy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="About — Karthik Periasamy">
+<meta name="twitter:description" content="Electronics and mathematics at BITS Pilani: what I work on, the tools I use, and where I studied.">
+<link rel="canonical" href="https://karthikperiasamy.vercel.app/about.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@75..150,400..900&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<canvas id="waferBg" aria-hidden="true"></canvas>
+<div class="wafer-veil" aria-hidden="true"></div>
+
+<header class="topbar">
+  <a class="brand" href="index.html">Karthik<span>.</span></a>
+  <button class="navtoggle" id="navtoggle" aria-expanded="false" aria-controls="topnav" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <nav class="topnav" id="topnav" aria-label="Main">
+    <a href="index.html">Home</a>
+    <a href="work.html">Work</a>
+    <a href="projects.html">Projects</a>
+    <a href="about.html" aria-current="page">About</a>
+  </nav>
+</header>
+
+<main>
+  <section>
+    <div class="wrap">
+      <div class="sec-head"><h2>About me</h2><span class="eyebrow">In my own words</span></div>
+      <p class="lede">I am currently interning at NuCurrent, where I work on GenA — their in-house applied-AI EDA platform that simulates circuit, thermal and EMI interactions to make wireless power antenna design dramatically faster — alongside hands-on hardware and firmware testing.</p>
+
+      <details class="more" open>
+        <summary>Read the rest</summary>
+        <div class="more-body">
+          <p>Before this, at Allegro MicroSystems, I spent a summer deep in analog design, running devices through Cadence Virtuoso and watching the same transistor behave differently across temperature, voltage and process corners. That attention to detail carried into my work as a Samsung ISWDP Fellow, where I trained on Sentaurus TCAD for semiconductor process simulation through a programme run with IISc Bangalore and Synopsys.</p>
+          <p>Alongside this industry experience, I've pursued research at BITS Pilani centred on modelling systems under uncertainty and optimising them within real-world constraints, with a recurring focus on sustainability and green energy. With Dr. Sumanta Pasari, I modelled the stochastic behaviour of wind and solar generation data, benchmarked distributional estimators, and applied that to a particle swarm optimisation model for energy trading in agrivoltaic systems under grid and tariff constraints.</p>
+          <p>With Dr. Rahul Singhal, I evaluated hardware implementations of the BB84, B92 and E91 quantum key distribution protocols, analysing trade-offs across source preparation, basis selection and detection schemes to propose a minimum-cost architecture for practical deployment. Different domains, but a shared thread: translating physical and statistical constraints into models that hold up in the real world.</p>
+          <p>What ties all of this together isn't a single specialisation but a willingness to move across domains — from transistor-level analog design to semiconductor process simulation, from energy systems modelling to quantum communication hardware, and now to antenna design and firmware at NuCurrent. This range doesn't dilute focus so much as sharpen it: each domain brings a different constraint to the table, and figuring out how to work within it is what I find genuinely interesting.</p>
+        </div>
+      </details>
+
+      <dl class="kv" style="margin-top:var(--s4)">
+        <div><dt>Qualification</dt><dd>B.E. (Hons.) Electronics &amp; Communication + M.Sc. (Hons.) Mathematics, BITS Pilani</dd></div>
+        <div><dt>Location</dt><dd>Hyderabad, India — currently in Bengaluru</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head"><h2>What I want to work on</h2><span class="eyebrow">Domains</span></div>
+      <div class="interests">
+        <div class="interest"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8h8v8H8z"/><path d="M12 2v6M12 16v6M2 12h6M16 12h6M6 4v2M18 4v2M6 18v2M18 18v2"/></svg><h3>Semiconductor Devices</h3><p>What the transistor is actually doing underneath the model card.</p></div>
+        <div class="interest"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12c2.5 0 2.5-7 5-7s2.5 14 5 14 2.5-7 5-7 2.5 3 5 3"/></svg><h3>Analog IC Design</h3><p>Transistor-level circuits, where the answer is a waveform rather than a bit.</p></div>
+        <div class="interest"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h6v5H4zM14 13h6v5h-6zM10 8.5h4v7"/><path d="M2 8.5h2M20 15.5h2"/></svg><h3>RTL &amp; Digital Design</h3><p>Describing a machine in SystemVerilog and watching it turn into cells.</p></div>
+        <div class="interest"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v14H3z"/><path d="M7 12l3 3 7-7"/></svg><h3>Verification &amp; Validation</h3><p>Treating a design as wrong until a testbench and a coverage number say otherwise.</p></div>
+        <div class="interest"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="2.4"/><circle cx="18" cy="7" r="2.4"/><circle cx="12" cy="17" r="2.4"/><path d="M7.8 7.4l2.6 7.6M16.4 9l-3 6.2M8.2 6.4h7.4"/></svg><h3>Applied Machine Learning</h3><p>Models that have to earn their place against a simpler baseline.</p></div>
+        <div class="interest"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20V4"/><path d="M3 17c4 0 5-9 9-9s5 5 9 5"/><circle cx="12" cy="8" r="1.8"/></svg><h3>Optimization Algorithms</h3><p>Swarms, gradients and constraints pointed at objectives that pay for themselves.</p></div>
+        <div class="interest"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18"/><path d="M5 20V9M10 20V5M15 20v-7M20 20v-11"/></svg><h3>Statistical Modelling</h3><p>Fitting distributions to messy measured data, then testing how well the fit holds.</p></div>
+        <div class="interest"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg><h3>Sustainable Energy Management</h3><p>Solar, wind, tariffs and storage — the economics on top of the physics.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head"><h2>What I work with</h2><span class="eyebrow">Tools</span></div>
+      <div data-tabs>
+        <div class="tabs" role="tablist">
+        <button class="tab" role="tab" aria-selected="false">Verification</button>
+        <button class="tab" role="tab" aria-selected="false">Digital &amp; DFT</button>
+        <button class="tab" role="tab" aria-selected="false">Analog &amp; devices</button>
+        <button class="tab" role="tab" aria-selected="false">Programming</button>
+        </div>
+      <div class="tabpanel" role="tabpanel" hidden><div class="chips"><span class="chip">SystemVerilog</span><span class="chip">Verilog</span><span class="chip">cocotb</span><span class="chip">Verilator</span><span class="chip">Icarus Verilog</span><span class="chip">RISC-V ISA</span></div></div>
+      <div class="tabpanel" role="tabpanel" hidden><div class="chips"><span class="chip">Yosys</span><span class="chip">OpenLane</span><span class="chip">SkyWater sky130</span><span class="chip">Scan insertion</span><span class="chip">Stuck-at fault simulation</span><span class="chip">ATPG (PODEM)</span></div></div>
+      <div class="tabpanel" role="tabpanel" hidden><div class="chips"><span class="chip">Cadence Virtuoso</span><span class="chip">Spectre X</span><span class="chip">LTspice</span><span class="chip">Sentaurus TCAD</span><span class="chip">CST Studio Suite</span></div></div>
+      <div class="tabpanel" role="tabpanel" hidden><div class="chips"><span class="chip">Python</span><span class="chip">C</span><span class="chip">MATLAB</span><span class="chip">Tcl</span><span class="chip">SQL</span><span class="chip">Verilog</span><span class="chip">Git</span><span class="chip">Make</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head"><h2>Education</h2><span class="eyebrow">Timeline</span></div>
+      <div class="timeline">
+        <div class="tl-item now">
+          <span class="tl-score">Ongoing</span>
+          <div class="tl-when">Oct 2022 – May 2027</div>
+          <h3>BITS Pilani</h3>
+          <div class="tl-where">B.E. (Hons.) Electronics &amp; Communication + M.Sc. (Hons.) Mathematics · Pilani, Rajasthan</div>
+        </div>
+        <div class="tl-item">
+          <span class="tl-score">96.4%</span>
+          <div class="tl-when">Jun 2020 – Aug 2022</div>
+          <h3>FIITJEE Junior College</h3>
+          <div class="tl-where">TSBIE · Hyderabad, Telangana</div>
+        </div>
+        <div class="tl-item">
+          <span class="tl-score">98.2%</span>
+          <div class="tl-when">Jun 2007 – Mar 2020</div>
+          <h3>Future Kid's School</h3>
+          <div class="tl-where">ICSE, ranked 3rd in Telangana · Hyderabad, Telangana</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head"><h2>Off the clock</h2><span class="eyebrow">Elsewhere</span></div>
+      <div class="shots">
+        <figure class="shot"><img src="assets/photos/1.jpg" alt="Karthik sitting cross-legged on the helipad marking at Birla Gliding Club, Pilani" loading="lazy" decoding="async"><figcaption>Helicopter impersonator at Birla Gliding Club, Pilani</figcaption></figure>
+        <figure class="shot"><img src="assets/photos/2.jpg" alt="Karthik playing drums and octapad under stage lights" loading="lazy" decoding="async"><figcaption>Behind the kit</figcaption></figure>
+        <figure class="shot"><img src="assets/photos/3.jpg" alt="Portrait of Karthik outdoors" loading="lazy" decoding="async"><figcaption>I need a haircut</figcaption></figure>
+        <figure class="shot"><img src="assets/photos/4.jpg" alt="Karthik with friends at the BITS Pilani campus sign" loading="lazy" decoding="async"><figcaption>Last exam (now a paper airplane)</figcaption></figure>
+        <figure class="shot"><img src="assets/photos/5.jpg" alt="Karthik standing in front of a mountain lake" loading="lazy" decoding="async"><figcaption>Considerably colder</figcaption></figure>
+      </div>
+    </div>
+  </section>
+  <section id="contact">
+    <div class="wrap">
+      <div class="sec-head"><h2>Get in touch</h2><span class="eyebrow">Contact</span></div>
+      <p class="lede">Happy to talk about anything here — the devices, the RTL, the statistics, or a fault I haven't caught yet.</p>
+      <div class="pads">
+        <a class="pad" href="mailto:karthik.lal.periasamy@gmail.com" aria-label="Email Karthik">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="1.5"/><path d="M3 6.5l9 6.5 9-6.5"/></svg>
+          <span class="k">Email</span>
+        </a>
+        <a class="pad" href="https://www.linkedin.com/in/karthikperiasamy/" target="_blank" rel="noopener" aria-label="LinkedIn profile">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 10.5V17M7 7.2v.1M11 17v-3.6a2.4 2.4 0 0 1 4.8 0V17"/></svg>
+          <span class="k">LinkedIn</span>
+        </a>
+        <a class="pad" href="https://github.com/kp7thebest" target="_blank" rel="noopener" aria-label="GitHub profile">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.3 4.3 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12 12 0 0 0-6 0C6.7 2.7 5.6 3 5.6 3a4.3 4.3 0 0 0-.1 3.2A4.6 4.6 0 0 0 4.2 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg>
+          <span class="k">GitHub</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-row">
+      <span>Karthik Periasamy · Hyderabad, India</span>
+      <span><a href="index.html">Home</a></span>
+    </div>
+    <p class="credit">
+      Aircraft: <a href="https://sketchfab.com/3d-models/rafale-fighter-jet-f012d19259b44bca82dda214aee7a53f" target="_blank" rel="noopener">Rafale Fighter Jet</a>
+      by <a href="https://sketchfab.com/ALI1388" target="_blank" rel="noopener">ALI1388</a>,
+      licensed <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.
+      Simplified for the web: external stores, landing gear and textures removed.
+    </p>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+
+</body>
+</html>

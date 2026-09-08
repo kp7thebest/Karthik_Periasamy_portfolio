@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Work — Karthik Periasamy</title>
+<meta name="description" content="Wireless power engineering at NuCurrent, analog design at Allegro MicroSystems, and the Samsung ISWDP fellowship.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2314161A'/%3E%3Crect x='9' y='9' width='14' height='14' fill='none' stroke='%23DE8A4E' stroke-width='2'/%3E%3Cpath d='M16 2v7M16 23v7M2 16h7M23 16h7' stroke='%236FA6D6' stroke-width='2'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Work — Karthik Periasamy">
+<meta property="og:description" content="Wireless power engineering at NuCurrent, analog design at Allegro MicroSystems, and the Samsung ISWDP fellowship.">
+<meta property="og:url" content="https://karthikperiasamy.vercel.app/work.html">
+<meta property="og:site_name" content="Karthik Periasamy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Work — Karthik Periasamy">
+<meta name="twitter:description" content="Wireless power engineering at NuCurrent, analog design at Allegro MicroSystems, and the Samsung ISWDP fellowship.">
+<link rel="canonical" href="https://karthikperiasamy.vercel.app/work.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@75..150,400..900&family=Archivo:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<canvas id="waferBg" aria-hidden="true"></canvas>
+<div class="wafer-veil" aria-hidden="true"></div>
+
+<header class="topbar">
+  <a class="brand" href="index.html">Karthik<span>.</span></a>
+  <button class="navtoggle" id="navtoggle" aria-expanded="false" aria-controls="topnav" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <nav class="topnav" id="topnav" aria-label="Main">
+    <a href="index.html">Home</a>
+    <a href="work.html" aria-current="page">Work</a>
+    <a href="projects.html">Projects</a>
+    <a href="about.html">About</a>
+  </nav>
+</header>
+
+<main>
+  <section>
+    <div class="wrap">
+      <div class="sec-head"><h2>Where I've worked</h2><span class="eyebrow">Experience</span></div>
+      <p class="lede">Two internships either side of a fellowship, with the degree running underneath the whole time.</p>
+
+      <div class="timing" role="img" aria-label="Timeline of roles from 2022 to 2027 drawn as a digital timing diagram">
+        <svg viewBox="0 0 1000 250">
+          <line class="axis" x1="60" y1="205" x2="975" y2="205"></line>
+          <g id="ticks"></g>
+          <g class="pulse" id="p-nucurrent" role="button" tabindex="0" aria-pressed="true" aria-label="NuCurrent, July to December 2026">
+            <text x="60" y="22">NuCurrent · wireless power</text>
+            <path class="trace a2" d="M60 64 L836 64 L844 34 L960 34"></path>
+            <path class="trace a2" d="M960 34 L975 34" stroke-dasharray="5 5"></path>
+            <rect fill="transparent" x="60" y="26" width="915" height="42" style="cursor:pointer"></rect>
+          </g>
+          <g class="pulse" id="p-allegro" role="button" tabindex="0" aria-pressed="false" aria-label="Allegro MicroSystems, June to August 2024">
+            <text x="60" y="86">Allegro MicroSystems · analog design</text>
+            <path class="trace a1" d="M60 128 L316 128 L324 98 L358 98 L366 128 L975 128"></path>
+            <rect fill="transparent" x="60" y="90" width="915" height="42" style="cursor:pointer"></rect>
+          </g>
+          <g class="pulse" id="p-bits" role="button" tabindex="0" aria-pressed="false" aria-label="BITS Pilani, October 2022 to May 2027">
+            <text x="60" y="150">BITS Pilani · reference clock, always high</text>
+            <path class="trace edu" d="M60 192 L66 162 L968 162 L975 192"></path>
+            <rect fill="transparent" x="60" y="154" width="915" height="42" style="cursor:pointer"></rect>
+          </g>
+        </svg>
+      </div>
+
+      <div id="readout" style="margin-top:var(--s4)" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head"><h2>Certifications</h2><span class="eyebrow">Training</span></div>
+      <div class="timeline">
+        <div class="tl-item now">
+          <div class="tl-when">IISc Bangalore · Synopsys · Samsung</div>
+          <h3>Indian Semiconductor Workforce Development Program</h3>
+          <div class="tl-where">Samsung Fellowship</div>
+          <details class="more">
+            <summary>What it covered</summary>
+            <div class="more-body">
+              <ul class="marks research">
+                <li>Advanced training in semiconductor devices, Sentaurus TCAD and process simulation.</li>
+                <li>Industry-sponsored modules with Rohde &amp; Schwarz and Tektronix.</li>
+                <li>Hands-on device calibration, process design and measurement-aware modelling.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+        <div class="tl-item">
+          <div class="tl-when">Cadence Design Systems</div>
+          <h3>Virtuoso Schematic Editor S1</h3>
+          <div class="tl-where">Creating design schematics</div>
+          <details class="more">
+            <summary>What it covered</summary>
+            <div class="more-body">
+              <ul class="marks research">
+                <li>Cadence Virtuoso schematic design, hierarchical design and design-rule-compliant workflows.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="contact">
+    <div class="wrap">
+      <div class="sec-head"><h2>Get in touch</h2><span class="eyebrow">Contact</span></div>
+      <p class="lede">Happy to talk about anything here — the devices, the RTL, the statistics, or a fault I haven't caught yet.</p>
+      <div class="pads">
+        <a class="pad" href="mailto:karthik.lal.periasamy@gmail.com" aria-label="Email Karthik">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="1.5"/><path d="M3 6.5l9 6.5 9-6.5"/></svg>
+          <span class="k">Email</span>
+        </a>
+        <a class="pad" href="https://www.linkedin.com/in/karthikperiasamy/" target="_blank" rel="noopener" aria-label="LinkedIn profile">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 10.5V17M7 7.2v.1M11 17v-3.6a2.4 2.4 0 0 1 4.8 0V17"/></svg>
+          <span class="k">LinkedIn</span>
+        </a>
+        <a class="pad" href="https://github.com/kp7thebest" target="_blank" rel="noopener" aria-label="GitHub profile">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.3 4.3 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12 12 0 0 0-6 0C6.7 2.7 5.6 3 5.6 3a4.3 4.3 0 0 0-.1 3.2A4.6 4.6 0 0 0 4.2 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg>
+          <span class="k">GitHub</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-row">
+      <span>Karthik Periasamy · Hyderabad, India</span>
+      <span><a href="index.html">Home</a></span>
+    </div>
+    <p class="credit">
+      Aircraft: <a href="https://sketchfab.com/3d-models/rafale-fighter-jet-f012d19259b44bca82dda214aee7a53f" target="_blank" rel="noopener">Rafale Fighter Jet</a>
+      by <a href="https://sketchfab.com/ALI1388" target="_blank" rel="noopener">ALI1388</a>,
+      licensed <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.
+      Simplified for the web: external stores, landing gear and textures removed.
+    </p>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+<script>
+window.ROLE_DATA={
+  "p-nucurrent":{
+    t:"NuCurrent Inc.",
+    when:"Jul 2026 – Dec 2026 · ongoing",
+    s:"Wireless power engineering intern · Bengaluru, Karnataka",
+    b:["Work on GenA, NuCurrent's in-house applied-AI EDA platform, which simulates circuit, thermal and EMI interactions to make wireless power antenna design dramatically faster.",
+       "Developed voxel meshing features for GenA Magnetics, and contributed to the in-house Numag electromagnetic solver \u2014 improving coil geometry handling and simulation accuracy.",
+       "Hands-on hardware and firmware testing of prototype products using Qi and NFC-based wireless charging."]
+  },
+  "p-allegro":{
+    t:"Allegro MicroSystems",
+    when:"Jun 2024 – Aug 2024",
+    s:"Analog design intern · Hyderabad, Telangana",
+    b:["Characterised more than 40 BCD devices across channel lengths in Cadence Virtuoso and Spectre X, sweeping DC, AC and transient.",
+       "Extracted and validated threshold voltage, on-resistance and switching metrics across PVT variation.",
+       "Automated the simulation data extraction and analysis workflow.",
+       "Compiled the device datasheets and characterisation reports the analog design and verification teams worked from."]
+  },
+  "p-bits":{
+    t:"BITS Pilani",
+    when:"Oct 2022 – May 2027",
+    s:"B.E. (Hons.) Electronics & Communication with M.Sc. (Hons.) Mathematics · Pilani, Rajasthan",
+    b:["A dual degree that runs signals, devices and VLSI alongside probability, estimation and optimisation.",
+       "The mathematics half is what makes the fault-simulation and estimator work on this site possible.",
+       "Still ongoing \u2014 the reference clock everything else on this diagram is measured against."]
+  }
+};
+(function(){
+  var ticks=document.getElementById("ticks");
+  if(!ticks) return;
+  var T0=2022.75,T1=2027.45,X0=60,X1=975;
+  [2023,2024,2025,2026,2027].forEach(function(y){
+    var x=X0+(y-T0)/(T1-T0)*(X1-X0);
+    var l=document.createElementNS("http://www.w3.org/2000/svg","line");
+    l.setAttribute("x1",x);l.setAttribute("x2",x);l.setAttribute("y1",12);l.setAttribute("y2",205);
+    l.setAttribute("class","axis");l.setAttribute("stroke-dasharray","2 6");ticks.appendChild(l);
+    var t=document.createElementNS("http://www.w3.org/2000/svg","text");
+    t.setAttribute("x",x);t.setAttribute("y",224);t.setAttribute("class","axis-lbl");
+    t.setAttribute("text-anchor","middle");t.textContent=y;ticks.appendChild(t);
+  });
+})();
+</script>
+</body>
+</html>
