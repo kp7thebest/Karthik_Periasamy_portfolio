@@ -39,7 +39,7 @@
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;background:var(--bg);scroll-padding-top:24px}
-html.loading{overflow:hidden}
+html.loading,html.held{overflow:hidden}
 body{margin:0;color:var(--ink);font-family:var(--text);font-size:16px;line-height:1.62;
   -webkit-font-smoothing:antialiased;overflow-x:hidden;background:var(--bg)}
 img,svg,canvas{max-width:100%}
@@ -1208,33 +1208,60 @@ var fl=$("#fl"), ruler=$("#altRuler");
 var entry=reduced?1:0, entryStart=0;
 w.addEventListener("boot:done",function(){ entryStart=performance.now(); });
 
+/* ---------------------------------------------------------
+   First visit: the intro is "held". Native scrolling is off and
+   wheel / touch / keys drive the flight directly, so a fast flick
+   can't skip it (Safari keeps momentum going through scrollTo, so
+   fighting native scroll doesn't work). Released once the jet has
+   flown off; after that the page scrolls normally.
+   --------------------------------------------------------- */
+var held=false, vT=0, animP=null;
+function span(){ return Math.max(1,intro.offsetHeight-w.innerHeight); }
 function introP(){
-  var span=intro.offsetHeight-w.innerHeight;
-  return clamp((w.scrollY-intro.offsetTop)/Math.max(span,1),0,1);
+  if(held) return vT;
+  return clamp((w.scrollY-intro.offsetTop)/span(),0,1);
 }
 w.introP=introP;
-
-/* the copy follows the aircraft's own (smoothed, speed-capped) progress when the 3D scene runs */
-var animP=null, gateOpen=reduced||!!startHash;
+function hold(on){
+  held=on; root.classList.toggle("held",on);
+  if(on) vT=clamp((w.scrollY-intro.offsetTop)/span(),0,1);
+}
+w.addEventListener("boot:done",function(){
+  if(!reduced && !startHash && typeof THREE!=="undefined") hold(true);
+});
+/* the copy follows the aircraft's own (smoothed, speed-capped) progress */
 w.setIntroAnim=function(p){
   animP=p;
-  if(p>=.985) gateOpen=true;
+  if(held && vT>=.999 && p>=.985) hold(false);
   renderIntro();
 };
-/* first visit: hold the page at the end of the intro until the flight has finished */
-function gate(){
-  if(gateOpen) return;
-  var end=intro.offsetTop+intro.offsetHeight-w.innerHeight;
-  if(w.scrollY>end+1){
-    if(animP!==null && animP<.985) w.scrollTo(0,end);
-    else gateOpen=true;
-  }
+function nudge(px){
+  vT=clamp(vT+px/span(),0,1);
+  w.scrollTo(0,Math.round(intro.offsetTop+vT*span()));
+  renderIntro();
 }
-w.addEventListener("scroll",gate,{passive:true});
-/* no scrolling at all while the loader is up (iOS ignores overflow:hidden) */
-function blockWhileLoading(e){ if(root.classList.contains("loading")) e.preventDefault(); }
-d.addEventListener("touchmove",blockWhileLoading,{passive:false});
-d.addEventListener("wheel",blockWhileLoading,{passive:false});
+function loading(){ return root.classList.contains("loading"); }
+d.addEventListener("wheel",function(e){
+  if(loading()){ e.preventDefault(); return; }
+  if(!held) return;
+  e.preventDefault();
+  nudge(e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?w.innerHeight:1));
+},{passive:false});
+var touchY=null;
+d.addEventListener("touchstart",function(e){ touchY=e.touches[0].clientY; },{passive:true});
+d.addEventListener("touchmove",function(e){
+  if(loading()){ e.preventDefault(); return; }
+  if(!held||touchY===null) return;
+  e.preventDefault();
+  var y=e.touches[0].clientY; nudge((touchY-y)*1.8); touchY=y;
+},{passive:false});
+d.addEventListener("keydown",function(e){
+  if(!held||e.altKey||e.metaKey||e.ctrlKey) return;
+  var vh=w.innerHeight, m={ArrowDown:90,ArrowUp:-90,PageDown:vh*.9,PageUp:-vh*.9," ":e.shiftKey?-vh*.9:vh*.9,End:1e6,Home:-1e6};
+  if(!(e.key in m)) return;
+  var t=e.target; if(t&&(t.isContentEditable||/INPUT|TEXTAREA|SELECT/.test(t.tagName))) return;
+  e.preventDefault(); nudge(m[e.key]);
+});
 
 function renderIntro(){
   var p=animP!==null?animP:introP();
@@ -1317,7 +1344,7 @@ w.addEventListener("resize",function(){ fitName(); onScroll(); });
 
 /* navigation */
 function jumpTo(hash,instant){
-  gateOpen=true; /* the rail and links always go where they're asked */
+  if(held) hold(false); /* the rail and links always go where they're asked */
   var el=hash==="#top"?intro:d.getElementById(hash.slice(1));
   if(!el) return;
   var y=hash==="#top"?0:el.getBoundingClientRect().top+w.scrollY;
