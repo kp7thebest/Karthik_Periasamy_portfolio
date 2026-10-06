@@ -41,7 +41,10 @@
 html{-webkit-text-size-adjust:100%;background:var(--bg);scroll-padding-top:24px}
 html.loading,html.held{overflow:hidden}
 body{margin:0;color:var(--ink);font-family:var(--text);font-size:16px;line-height:1.62;
-  -webkit-font-smoothing:antialiased;overflow-x:hidden;background:var(--bg)}
+  -webkit-font-smoothing:antialiased;overflow-x:clip;background:var(--bg)}
+/* overflow-x:hidden on body turns it into its own scroll box whenever html is overflow:hidden
+   (loader, held intro), and the sticky stage then scrolls away, leaving a blank screen.
+   clip trims sideways overflow without creating a scroll box. */
 img,svg,canvas{max-width:100%}
 a{color:inherit}
 button{font:inherit;color:inherit}
