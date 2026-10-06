@@ -280,7 +280,12 @@ body.past .rail{transform:none}
 .stat:last-child{border-right:0}
 .stat b{display:block;font-family:var(--display);font-variation-settings:"wdth" 130,"wght" 780;
   font-size:clamp(38px,4.6vw,66px);line-height:.92;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
-.stat b small{font-size:.5em;color:var(--ice);margin-left:2px}
+/* size every figure from the row's width so "99.78%" always fits its column, and all four match */
+.stats{container-type:inline-size}
+.stat b{white-space:nowrap;font-size:min(66px,calc(5.9cqi - 11.5px))}
+@media (max-width:860px){ .stat b{font-size:min(66px,calc(11.8cqi - 11.5px))} }
+.stat b small{display:inline-block;vertical-align:top;font-size:.5em;line-height:1;margin:.06em 0 0 .08em;
+  color:var(--ice);font-variation-settings:"wdth" 100,"wght" 700;letter-spacing:0}
 .stat span{display:block;margin-top:12px;color:var(--dim);font-size:14px;line-height:1.45;max-width:24ch}
 
 @media (max-width:860px){
@@ -1209,8 +1214,30 @@ function introP(){
 }
 w.introP=introP;
 
+/* the copy follows the aircraft's own (smoothed, speed-capped) progress when the 3D scene runs */
+var animP=null, gateOpen=reduced||!!startHash;
+w.setIntroAnim=function(p){
+  animP=p;
+  if(p>=.985) gateOpen=true;
+  renderIntro();
+};
+/* first visit: hold the page at the end of the intro until the flight has finished */
+function gate(){
+  if(gateOpen) return;
+  var end=intro.offsetTop+intro.offsetHeight-w.innerHeight;
+  if(w.scrollY>end+1){
+    if(animP!==null && animP<.985) w.scrollTo(0,end);
+    else gateOpen=true;
+  }
+}
+w.addEventListener("scroll",gate,{passive:true});
+/* no scrolling at all while the loader is up (iOS ignores overflow:hidden) */
+function blockWhileLoading(e){ if(root.classList.contains("loading")) e.preventDefault(); }
+d.addEventListener("touchmove",blockWhileLoading,{passive:false});
+d.addEventListener("wheel",blockWhileLoading,{passive:false});
+
 function renderIntro(){
-  var p=introP();
+  var p=animP!==null?animP:introP();
   if(!reduced && entryStart){ entry=clamp((performance.now()-entryStart)/900,0,1); }
   var e=1-Math.pow(1-entry,3);
   var active=0;
@@ -1228,7 +1255,8 @@ function renderIntro(){
   dots.forEach(function(s,i){ s.classList.toggle("on",i===active); });
   hint.style.opacity=(1-smooth(.01,.05,p))*e;
   hudName.classList.toggle("on",p>.17);
-  fl.textContent=String(Math.round(p*350)).padStart(3,"0");
+  /* climb to Rafale cruise: FL400 */
+  fl.textContent=String(Math.min(400,Math.round(p/.985*400))).padStart(3,"0");
   ruler.style.setProperty("--alt",((1-p)*100).toFixed(1)+"%");
 }
 
@@ -1289,6 +1317,7 @@ w.addEventListener("resize",function(){ fitName(); onScroll(); });
 
 /* navigation */
 function jumpTo(hash,instant){
+  gateOpen=true; /* the rail and links always go where they're asked */
   var el=hash==="#top"?intro:d.getElementById(hash.slice(1));
   if(!el) return;
   var y=hash==="#top"?0:el.getBoundingClientRect().top+w.scrollY;
@@ -1511,7 +1540,7 @@ function clamp(v,a,b){ return Math.min(b,Math.max(a,v)); }
 
   var flow=d.createElement("div"); flow.className="flow"; flow.setAttribute("aria-hidden","true");
   var read=d.createElement("p"); read.className="flow-read";
-  read.innerHTML='<span id="flowMs">// reflowed in 0.00 ms</span> <span>· 0 DOM reads</span> <span class="flow-hint" id="flowHint">· drag the wafer</span>';
+  read.innerHTML='<span id="flowMs">// reflowed in 0.00 ms</span> <span>· 0 DOM reads</span> <span class="flow-hint" id="flowHint">· tap or drag the wafer</span>';
   about.insertBefore(flow,paras[0]);
   flow.appendChild(wafer);
   about.insertBefore(read,paras[1].nextSibling);
@@ -1521,7 +1550,7 @@ function clamp(v,a,b){ return Math.min(b,Math.max(a,v)); }
 
   /* prepared state: words with widths, per paragraph */
   var blocks=[], W=0, R=0, gap=0, pool=[], used=0, height=0;
-  var pos={x:0,y:0}, anchor={x:.72,y:.42}, paused=reduced, drag=null, t0=performance.now(), tPause=0;
+  var pos={x:0,y:0}, anchor={x:.72,y:.42}, paused=true, drag=null, t0=performance.now(), tPause=t0; /* still until someone touches it */
 
   function prepare(){
     W=flow.clientWidth; R=wafer.offsetWidth/2;
@@ -1591,7 +1620,7 @@ function clamp(v,a,b){ return Math.min(b,Math.max(a,v)); }
     for(var k=used;k<pool.length;k++) pool[k].style.display="none";
     flow.style.height=height.toFixed(0)+"px";
     var ms=performance.now()-t;
-    msEl.textContent="// reflowed in "+ms.toFixed(2)+" ms";
+    msEl.textContent="// reflowed in "+(ms<.1?"< 0.1":ms.toFixed(2))+" ms";
   }
 
   function place(now){
@@ -1625,12 +1654,14 @@ function clamp(v,a,b){ return Math.min(b,Math.max(a,v)); }
   });
   function end(e){
     if(!drag||e.pointerId!==drag.id) return;
-    if(!drag.moved && !reduced){
-      paused=!paused;
+    /* a tap toggles the drift; letting go after a drag sets it drifting */
+    var next=drag.moved ? false : !paused;
+    if(!reduced && next!==paused){
+      paused=next;
       if(paused) tPause=performance.now(); else t0+=performance.now()-tPause;
-      hintEl.textContent=paused?"· paused, tap to drift":"· drag the wafer";
+      hintEl.textContent=paused?"· paused, tap to drift":"· drifting, tap to pause";
     }
-    drag=null; wafer.classList.remove("grab");
+    drag=null; wafer.classList.remove("grab"); kick();
   }
   wafer.addEventListener("pointerup",end);
   wafer.addEventListener("pointercancel",end);
@@ -5515,7 +5546,7 @@ function resize(){
 resize(); window.addEventListener("resize",resize);
 
 /* ---- state ---- */
-var pS=0, vel=0, lastY=window.scrollY, burn=.15, clock=0, running=true;
+var pS=0, lastT=0, vel=0, lastY=window.scrollY, burn=.15, clock=0, running=true;
 var mx=0,my=0,tmx=0,tmy=0, entryT0=0, rendered=false;
 window.addEventListener("scroll",function(){ var dY=Math.abs(window.scrollY-lastY); lastY=window.scrollY; vel=Math.min(1,vel+dY*0.004); },{passive:true});
 if(window.matchMedia("(hover:hover) and (pointer:fine)").matches){
@@ -5528,8 +5559,16 @@ function frame(){
   if(!running) return;
   if(!reduced) requestAnimationFrame(frame);
   clock+=1/60;
+  var now=performance.now(), dt=Math.min(.1,(now-(lastT||now))/1000); lastT=now;
   var pT=window.introP?window.introP():0;
-  pS+=(pT-pS)*(reduced?1:0.085);
+  if(reduced) pS=pT;
+  else{
+    /* ease toward the scroll position, but never faster than the full flight in ~3.2 s,
+       so a fast flick still plays the whole sequence */
+    var step=(pT-pS)*(1-Math.pow(1-.085,dt*60)), cap=dt/3.2;
+    pS+=Math.max(-cap*1.6,Math.min(cap,step));
+  }
+  if(window.setIntroAnim) window.setIntroAnim(pS);
   vel*=0.94;
   var p=pS;
 
